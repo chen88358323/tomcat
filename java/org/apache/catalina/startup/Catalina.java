@@ -568,7 +568,7 @@ public class Catalina {
         // Before digester - it may be needed
         initNaming();
 
-        // Create and execute our Digester
+        // Create and execute our Digester   解析server.xml
         Digester digester = createStartDigester();
 
         InputSource inputSource = null;

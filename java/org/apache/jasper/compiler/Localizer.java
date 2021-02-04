@@ -16,6 +16,7 @@
  */
 package org.apache.jasper.compiler;
 
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -59,6 +60,16 @@ public class Localizer {
             }
         } catch (MissingResourceException e) {
         }
+
+
+        /***add by cc   add 4 fix console 乱码问题*/
+        try {
+            errMsg = new String(errMsg.getBytes("ISO-8859-1"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        /***add by cc   add 4 fix console 乱码问题*/
         return errMsg;
     }
 

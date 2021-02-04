@@ -13,7 +13,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *  启动入口
+ *  */
 package org.apache.catalina.startup;
 
 import java.io.File;
@@ -187,11 +188,11 @@ public final class Bootstrap {
         // Set Catalina path
         setCatalinaHome();
         setCatalinaBase();
-
+        //初始化 三个类加载器  common  share ?
         initClassLoaders();
 
         Thread.currentThread().setContextClassLoader(catalinaLoader);
-
+//todo
         SecurityClassLoad.securityClassLoad(catalinaLoader);
 
         // Load our startup class and call its process() method
@@ -200,12 +201,12 @@ public final class Bootstrap {
         Class<?> startupClass =
             catalinaLoader.loadClass
             ("org.apache.catalina.startup.Catalina");
-        Object startupInstance = startupClass.newInstance();
+        Object startupInstance = startupClass.newInstance();  // why not straight new one
 
         // Set the shared extensions class loader
+        String methodName = "setParentClassLoader";
         if (log.isDebugEnabled())
             log.debug("Setting startup class properties");
-        String methodName = "setParentClassLoader";
         Class<?> paramTypes[] = new Class[1];
         paramTypes[0] = Class.forName("java.lang.ClassLoader");
         Object paramValues[] = new Object[1];
@@ -376,7 +377,7 @@ public final class Bootstrap {
      */
     public static void main(String args[]) {
 
-        synchronized (daemonLock) {
+        synchronized (daemonLock) {//单例模式   类锁  对象锁
             if (daemon == null) {
                 // Don't set daemon until init() has completed
                 Bootstrap bootstrap = new Bootstrap();
@@ -400,7 +401,7 @@ public final class Bootstrap {
             String command = "start";
             if (args.length > 0) {
                 command = args[args.length - 1];
-            }
+            }//状态为什么不用枚举？
 
             if (command.equals("startd")) {
                 args[args.length - 1] = "start";
